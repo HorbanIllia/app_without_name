@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:app_without_name/models/emergency.dart';
+import 'package:app_without_name/utils/database.dart';
 import 'package:app_without_name/widgets/gradient_button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class CreateItemScreen extends StatefulWidget {
@@ -14,16 +18,22 @@ class CreateItemScreen extends StatefulWidget {
 class _CreateItemScreenState extends State<CreateItemScreen>{
   File imageFile = null;
   List<File> listImage = [];
+  var lat, lon;
+  final nameController = TextEditingController();
+  final descriptionController = TextEditingController();
+
 
   @override
   void initState() {
     super.initState();
+    getCoordinates();
   }
 
   @override
   Widget build(BuildContext context) {
 
     int _currentSlide = 0;
+    int typeEmergency = 0;
 
     return Scaffold(
       appBar: AppBar(
@@ -104,14 +114,14 @@ class _CreateItemScreenState extends State<CreateItemScreen>{
                 ),
                 SizedBox(height: 12,),
                 TextField(
-                  controller: null,
+                  controller: nameController,
                   decoration: InputDecoration(
                     labelText: 'Name',
                   ),
                 ),
                 SizedBox(height: 12,),
                 TextField(
-                  controller: null,
+                  controller: descriptionController,
                   decoration: InputDecoration(
                     labelText: 'Description',
                   ),
@@ -129,11 +139,24 @@ class _CreateItemScreenState extends State<CreateItemScreen>{
                   labels: ['Attention', 'Dangerous'],
                   activeBgColors: [Colors.yellow, Colors.red],
                   onToggle: (index) {
-
+                    typeEmergency = index;
                   },
                 ),
                 SizedBox(height: 12,),
-                Text("coordinate"),
+                Text("Address"),
+                SizedBox(height: 6,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Latitude: $lat; Longitude: $lon"),
+                    GestureDetector(
+                      child: Icon(Icons.edit),
+                      onTap: (){
+                        showMap();
+                      },
+                    ),
+                  ],
+                ),
                 SizedBox(height: 12,),
                 RaisedGradientButton(
                   width: double.infinity,
@@ -142,7 +165,15 @@ class _CreateItemScreenState extends State<CreateItemScreen>{
                       colors: <Color>[Colors.yellowAccent, Colors.redAccent]
                   ),
                   onPressed: (){
-
+                    DBProvider.db.newClient(
+                        Emergency(
+                            name: nameController.text,
+                            description: descriptionController.text,
+                            type: typeEmergency,
+                            coordinates:"$lat;$lon",
+                            photo:  listImage.toString())
+                    );
+                    Navigator.of(context).pop();
                   },
                   child: Text("Save", style: TextStyle(color: Colors.white),),
                 ),
@@ -154,4 +185,60 @@ class _CreateItemScreenState extends State<CreateItemScreen>{
     );
   }
 
+  void getCoordinates() async {
+
+    Location location = new Location();
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    locationData = await location.getLocation();
+    setState(() {
+      lat = locationData.latitude;
+      lon = locationData.longitude;
+    });
+  }
+
+  void showMap(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          content: Text("soon"),
+          actions: [
+            FlatButton(
+              child: Text("OK"),
+              onPressed: (){
+
+              },
+            ),
+            FlatButton(
+              child: Text("Close"),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
+
