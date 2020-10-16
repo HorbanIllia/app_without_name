@@ -15,15 +15,13 @@ class HomeScreen extends StatefulWidget  {
 class _HomeState extends State<HomeScreen> {
   int currentIndex = 0;
 
-  List<Widget> tabsList = [HomeHWidget(),MyEmergencyHWidget(),MapHWidget(),AccountHWidget()];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: IndexedStack(
           index: currentIndex,
-          children: tabsList,
+          children: [HomeHWidget(),MyEmergencyHScreen(),MapHWidget(),AccountHWidget()],
         ),
       ),
       bottomNavigationBar: Container(

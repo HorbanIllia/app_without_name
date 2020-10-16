@@ -7,6 +7,7 @@ const String NewPassViewRoute = "newpass";
 const String RegistrationViewRoute = "reg";
 const String TermsViewRoute = "terms";
 const String CreateItemRoute = "additem";
+const String InfoEmergencyScreen = "infoscren";
 
 
 const String TextCarouselOne = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
@@ -19,3 +20,7 @@ const String TextTerms = "Lorem ipsum dolor sit amet, consectetur adipiscing eli
 
 const String HomeScreenAppName = "EMERGENCY APP";
 const String HomeScreenInstruction = "Inform other people about an emergency road, an emergency building, a broken power line and etc.";
+const String DeleteMessage = "Do you want to delete a data?";
+const String AnswerYes = "Yes";
+const String AnswerNo = "No";
+const String AnswerCancel = "Cancel";

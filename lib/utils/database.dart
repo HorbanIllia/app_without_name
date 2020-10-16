@@ -32,16 +32,28 @@ class DBProvider {
     });
   }
 
-  newClient(Emergency emergency) async {
+  newEmergency(Emergency emergency) async {
     final db = await database;
 
     var table = await db.rawQuery("SELECT MAX(id)+1 as id FROM Emergency");
     int id = table.first["id"];
-    //insert to the table using the new id
+
     var raw = await db.rawInsert(
         "INSERT Into Emergency (id,name,description,type,coordinates,photo)"
             " VALUES (?,?,?,?,?,?)",
         [id, emergency.name, emergency.description, emergency.type, emergency.coordinates, emergency.photo]);
     return raw;
+  }
+
+  Future<List<Emergency>> getAllEmergency() async {
+    final db = await database;
+    var res = await db.query("Emergency");
+    List<Emergency> list = res.isNotEmpty ? res.map((c) => Emergency.fromMap(c)).toList() : [];
+    return list;
+  }
+
+  deleteEmergency(int id) async {
+    final db = await database;
+    return db.delete("Emergency", where: "id = ?", whereArgs: [id]);
   }
 }

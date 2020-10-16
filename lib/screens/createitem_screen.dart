@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:app_without_name/models/emergency.dart';
@@ -5,7 +6,6 @@ import 'package:app_without_name/utils/database.dart';
 import 'package:app_without_name/widgets/gradient_button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -18,6 +18,7 @@ class CreateItemScreen extends StatefulWidget {
 class _CreateItemScreenState extends State<CreateItemScreen>{
   File imageFile = null;
   List<File> listImage = [];
+  List<String> listImageName = [];
   var lat, lon;
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -86,8 +87,10 @@ class _CreateItemScreenState extends State<CreateItemScreen>{
                     GestureDetector(
                       child: Icon(Icons.camera_alt, size: 50, color: Color.alphaBlend(Colors.black12,Colors.white ),),
                       onTap: () async {
-                        listImage.add(await ImagePicker.pickImage(
-                            source: ImageSource.camera, imageQuality: 90));
+                        File img = await ImagePicker.pickImage(
+                            source: ImageSource.camera, imageQuality: 90);
+                        listImage.add(img);
+                        listImageName.add(img.path);
                         setState(() {
 
                         });
@@ -165,14 +168,17 @@ class _CreateItemScreenState extends State<CreateItemScreen>{
                       colors: <Color>[Colors.yellowAccent, Colors.redAccent]
                   ),
                   onPressed: (){
-                    DBProvider.db.newClient(
+                    DBProvider.db.newEmergency(
                         Emergency(
                             name: nameController.text,
                             description: descriptionController.text,
                             type: typeEmergency,
                             coordinates:"$lat;$lon",
-                            photo:  listImage.toString())
+                            photo:  jsonEncode(listImageName))
                     );
+                    setState(() {
+
+                    });
                     Navigator.of(context).pop();
                   },
                   child: Text("Save", style: TextStyle(color: Colors.white),),
