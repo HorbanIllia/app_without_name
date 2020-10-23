@@ -10,4 +10,4 @@ Home screen
 Add item
 ![Screenshot5](screenshot/create.gif)
 List
-![Screenshot5](screenshot/list.gif)
+![Screenshot6](screenshot/list.gif)
