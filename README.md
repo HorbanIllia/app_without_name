@@ -6,7 +6,7 @@ A new Flutter application.
 Carousel
 ![Screenshot0](screenshot/start.gif)
 Home screen
-![Screenshot4](main.gif)
+![Screenshot4](screenshot/main.gif)
 Add item
 ![Screenshot5](screenshot/create.gif)
 List
