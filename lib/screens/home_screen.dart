@@ -21,7 +21,7 @@ class _HomeState extends State<HomeScreen> {
       body: SafeArea(
         child: IndexedStack(
           index: currentIndex,
-          children: [HomeHWidget(),MyEmergencyHScreen(),MapHWidget(),AccountHWidget()],
+          children: [HomeHWidget(),MyEmergencyHScreen(),MapHScreen(),AccountHWidget()],
         ),
       ),
       bottomNavigationBar: Container(
