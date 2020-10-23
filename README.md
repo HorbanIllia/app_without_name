@@ -4,12 +4,10 @@ A new Flutter application.
 
 ## Screenshot
 Carousel
-![Screenshot0](screenshot/Screenshot0.jpg)
-![Screenshot1](screenshot/Screenshot1.jpg)
-Login screen
-![Screenshot2](screenshot/Screenshot2.jpg)
+![Screenshot0](screenshot/start.gif)
 Home screen
-![Screenshot4](screenshot/Screenshot4.jpg)
-Add item screen
-![Screenshot5](screenshot/Screenshot5.jpg)
-![Screenshot6](screenshot/Screenshot6.jpg)
+![Screenshot4](main.gif)
+Add item
+![Screenshot5](screenshot/create.gif)
+List
+![Screenshot5](screenshot/list.gif)
